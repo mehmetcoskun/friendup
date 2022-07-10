@@ -13,7 +13,7 @@ import { setUserUid } from '../store/user'
 
 import * as Icon from '../components/icons'
 
-export default function Login({ navigation }) {
+export default function Login() {
   const dispatch = useDispatch()
   return (
     <ImageBackground
@@ -63,10 +63,13 @@ const styles = StyleSheet.create({
     fontFamily: 'NunitoBold',
     textAlign: 'center',
     lineHeight: 29,
+    position: 'absolute',
+    top: 200,
   },
   loginButtonContainer: {
     width: 335,
-    marginTop: 350,
+    position: 'absolute',
+    bottom: 150,
   },
   loginButtonBackground: {
     position: 'absolute',

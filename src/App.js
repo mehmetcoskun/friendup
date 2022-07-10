@@ -1,13 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  setUserId,
+  setUserAvatar,
+  setUserFullName,
+  setUserEmail,
+  setUserGender,
+  setUserBirthDate,
+  setUserLocation,
+  setUserBiography,
+} from './store/user'
 
-import Splash from './views/Splash'
 import Login from './views/Login'
-import Discover from './views/Discover'
+import Home from './views/Home'
 import Search from './views/Search'
 import Chat from './views/Chat'
 import Profile from './views/Profile'
@@ -16,19 +25,20 @@ import TabBar from './components/TabBar'
 import * as Icon from './components/icons'
 
 export default function App({ navigation }) {
-  const [isLoading, setIsLoading] = useState(true)
-
   const uid = useSelector((state) => state.user.uid)
 
-  useEffect(() => {
-    setInterval(() => {
-      setIsLoading(false)
-    }, 1000)
-  }, [])
+  const dispatch = useDispatch()
 
-  if (isLoading) {
-    return <Splash />
-  }
+  useEffect(() => {
+    dispatch(setUserId('1'))
+    dispatch(setUserAvatar('https://i.pravatar.cc/300'))
+    dispatch(setUserFullName('Mehmet'))
+    dispatch(setUserEmail('tekiner65@hotmail.com'))
+    dispatch(setUserGender('male'))
+    dispatch(setUserBirthDate('21.06.2002'))
+    dispatch(setUserLocation('Antalya'))
+    dispatch(setUserBiography('Lorem ipsum dolor sit amet'))
+  }, [])
 
   const Tab = createBottomTabNavigator()
   const Stack = createNativeStackNavigator()
@@ -41,11 +51,11 @@ export default function App({ navigation }) {
           screenOptions={{ headerShown: false }}
         >
           <Tab.Screen
-            name="Discover"
-            component={Discover}
+            name="Home"
+            component={Home}
             options={() => ({
               tabBarIcon: ({ focused }) => (
-                <Icon.Discover fill={focused ? '#fff' : '#6B6B6B'} />
+                <Icon.Home fill={focused ? '#fff' : '#6B6B6B'} />
               ),
             })}
           />

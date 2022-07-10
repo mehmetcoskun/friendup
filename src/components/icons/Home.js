@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 
-const Discover = (props) => (
+const Home = (props) => (
   <Svg
     width={37}
     height={37}
@@ -13,4 +13,4 @@ const Discover = (props) => (
   </Svg>
 )
 
-export default Discover
+export default Home

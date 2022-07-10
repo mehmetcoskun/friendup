@@ -47,7 +47,7 @@ export default function TabBar({ state, descriptors, navigation }) {
             activeOpacity={1}
             style={{
               flex: 1,
-              height: 70,
+              height: 90,
               backgroundColor: '#202426',
               justifyContent: 'center',
               alignItems: 'center',
