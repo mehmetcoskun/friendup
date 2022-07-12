@@ -1,9 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { useSelector, useDispatch } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { useSelector, useDispatch } from 'react-redux';
 import {
   setUserId,
   setUserAvatar,
@@ -13,39 +15,53 @@ import {
   setUserBirthDate,
   setUserLocation,
   setUserBiography,
-} from './store/user'
+} from './store/user';
+import { setRefreshToken, setAccessToken } from './store/auth';
 
-import Login from './views/Login'
-import Home from './views/Home'
-import Search from './views/Search'
-import Chat from './views/Chat'
-import Profile from './views/Profile'
+import { getRefreshTokenData } from './utils/spotify';
 
-import TabBar from './components/TabBar'
-import * as Icon from './components/icons'
+import Login from './views/Login/Login';
+import Home from './views/Home/Home';
+import Search from './views/Search/Search';
+import Chat from './views/Chat/Chat';
+import Profile from './views/Profile/Profile';
 
-export default function App({ navigation }) {
-  const uid = useSelector((state) => state.user.uid)
+import TabBar from './components/TabBar';
+import * as Icon from './components/icons';
 
-  const dispatch = useDispatch()
+export default function App() {
+  const { refreshToken } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setUserId('1'))
-    dispatch(setUserAvatar('https://i.pravatar.cc/300'))
-    dispatch(setUserFullName('Mehmet'))
-    dispatch(setUserEmail('tekiner65@hotmail.com'))
-    dispatch(setUserGender('male'))
-    dispatch(setUserBirthDate('21.06.2002'))
-    dispatch(setUserLocation('Antalya'))
-    dispatch(setUserBiography('Lorem ipsum dolor sit amet'))
-  }, [])
+    AsyncStorage.getItem('refresh_token').then((refresh_token) => {
+      if (refresh_token) {
+        getRefreshTokenData(refresh_token).then(({ access_token }) => {
+          dispatch(setAccessToken(access_token));
+        });
+        dispatch(setRefreshToken(refresh_token));
+      }
+    });
+  }, [refreshToken]);
 
-  const Tab = createBottomTabNavigator()
-  const Stack = createNativeStackNavigator()
+  useEffect(() => {
+    dispatch(setUserId('1'));
+    dispatch(setUserAvatar('https://i.pravatar.cc/300'));
+    dispatch(setUserFullName('Mehmet'));
+    dispatch(setUserEmail('tekiner65@hotmail.com'));
+    dispatch(setUserGender('male'));
+    dispatch(setUserBirthDate('21.06.2002'));
+    dispatch(setUserLocation('Antalya'));
+    dispatch(setUserBiography('Lorem ipsum dolor sit amet'));
+  }, []);
+
+  const Tab = createBottomTabNavigator();
+  const Stack = createNativeStackNavigator();
 
   return (
     <>
-      {uid ? (
+      {refreshToken ? (
         <Tab.Navigator
           tabBar={(props) => <TabBar {...props} />}
           screenOptions={{ headerShown: false }}
@@ -98,5 +114,5 @@ export default function App({ navigation }) {
         </Stack.Navigator>
       )}
     </>
-  )
+  );
 }

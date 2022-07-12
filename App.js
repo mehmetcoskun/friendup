@@ -1,36 +1,53 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
+import { StatusBar } from 'react-native';
 
-import { StatusBar } from 'react-native'
+// React Navigation
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 
-import { NavigationContainer, DarkTheme } from '@react-navigation/native'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+// React Native SafeArea
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { useFonts } from 'expo-font'
+// Expo
+import { useFonts } from 'expo-font';
 
-import { Provider } from 'react-redux'
+// Apollo
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from '@apollo/client';
 
-import { store } from './src/store'
-import App from './src/App'
+// Redux
+import { Provider } from 'react-redux';
+import { store } from './src/store';
 
-import Splash from './src/views/Splash'
+// Views
+import App from './src/App';
+import Splash from './src/views/Splash/Splash';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql',
+  cache: new InMemoryCache(),
+});
 
 export default () => {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   useFonts({
     NunitoBold: require('./assets/fonts/Nunito-Bold.ttf'),
     NunitoMedium: require('./assets/fonts/Nunito-Medium.ttf'),
     AlataRegular: require('./assets/fonts/Alata-Regular.ttf'),
-  })
+  });
 
   useEffect(() => {
     setInterval(() => {
-      setIsLoading(false)
-    }, 1000)
-  }, [])
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
   if (isLoading) {
-    return <Splash />
+    return <Splash />;
   }
 
   const Friendup = {
@@ -45,13 +62,15 @@ export default () => {
   };
 
   return (
-    <Provider store={store}>
-      <SafeAreaProvider>
-        <StatusBar barStyle="light-content" />
-        <NavigationContainer theme={Friendup}>
-          <App />
-        </NavigationContainer>
-      </SafeAreaProvider>
-    </Provider>
-  )
-}
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <StatusBar barStyle="light-content" />
+          <NavigationContainer theme={Friendup}>
+            <App />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </Provider>
+    </ApolloProvider>
+  );
+};
