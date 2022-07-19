@@ -1,5 +1,7 @@
+// Axios
 import axios from 'axios';
 
+// Buffer
 import { Buffer } from 'buffer';
 
 export const credentials = {
@@ -25,25 +27,17 @@ export const getFirstTokenData = async (code) => {
   }
   formBody = formBody.join('&');
 
-  const response = await axios.post(
-    credentials.spotifyTokenUri,
-    formBody,
-    {
-      headers: {
-        Authorization:
-          'Basic ' +
-          new Buffer(
-            credentials.clientId + ':' + credentials.clientSecret
-          ).toString('base64'),
-      },
-    }
-  );
+  const response = await axios.post(credentials.spotifyTokenUri, formBody, {
+    headers: {
+      Authorization:
+        'Basic ' +
+        new Buffer(
+          credentials.clientId + ':' + credentials.clientSecret
+        ).toString('base64'),
+    },
+  });
 
-  try {
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+  return response.data;
 };
 
 export const getRefreshTokenData = async (refreshToken) => {
@@ -59,29 +53,21 @@ export const getRefreshTokenData = async (refreshToken) => {
   }
   formBody = formBody.join('&');
 
-  const response = await axios.post(
-    credentials.spotifyTokenUri,
-    formBody,
-    {
-      headers: {
-        Authorization:
-          'Basic ' +
-          new Buffer(
-            credentials.clientId + ':' + credentials.clientSecret
-          ).toString('base64'),
-      },
-    }
-  );
+  const response = await axios.post(credentials.spotifyTokenUri, formBody, {
+    headers: {
+      Authorization:
+        'Basic ' +
+        new Buffer(
+          credentials.clientId + ':' + credentials.clientSecret
+        ).toString('base64'),
+    },
+  });
 
-  try {
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+  return response.data;
 };
 
 export const getData = async (token, url) => {
-  const response = await axios(`${credentials.spotifyApiUri}/${url}`, {
+  const response = await axios(`${credentials.spotifyApiUri}${url}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -90,9 +76,8 @@ export const getData = async (token, url) => {
     },
   });
 
-  try {
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+  return {
+    status: response.status,
+    data: response.data,
+  };
 };

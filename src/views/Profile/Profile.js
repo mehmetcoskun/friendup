@@ -10,17 +10,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Profile() {
   const dispatch = useDispatch();
+
   return (
     <SafeAreaView>
       <TouchableOpacity
         onPress={() => {
-          AsyncStorage.removeItem('refresh_token').then(() => {
+          AsyncStorage.removeItem('auth').then(() => {
             dispatch(setRefreshToken(''));
           });
         }}
       >
         <Text style={{ color: 'white' }}>Logout</Text>
       </TouchableOpacity>
+
     </SafeAreaView>
   );
 }

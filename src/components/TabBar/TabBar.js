@@ -1,39 +1,37 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-
-import * as Icon from './icons'
+import { View, TouchableOpacity } from 'react-native';
 
 export default function TabBar({ state, descriptors, navigation }) {
   return (
     <View style={{ flexDirection: 'row' }}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key]
+        const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
             ? options.title
-            : route.name
+            : route.name;
 
-        const isFocused = state.index === index
+        const isFocused = state.index === index;
 
         const onPress = () => {
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,
             canPreventDefault: true,
-          })
+          });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate({ name: route.name, merge: true })
+            navigation.navigate({ name: route.name, merge: true });
           }
-        }
+        };
 
         const onLongPress = () => {
           navigation.emit({
             type: 'tabLongPress',
             target: route.key,
-          })
-        }
+          });
+        };
 
         return (
           <TouchableOpacity
@@ -55,8 +53,8 @@ export default function TabBar({ state, descriptors, navigation }) {
           >
             {options.tabBarIcon({ focused: isFocused })}
           </TouchableOpacity>
-        )
+        );
       })}
     </View>
-  )
+  );
 }
