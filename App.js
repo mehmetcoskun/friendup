@@ -35,7 +35,7 @@ export default () => {
     NunitoBold: require('./assets/fonts/Nunito-Bold.ttf'),
     NunitoMedium: require('./assets/fonts/Nunito-Medium.ttf'),
     NunitoSemiBold: require('./assets/fonts/Nunito-SemiBold.ttf'),
-    AlataRegular: require('./assets/fonts/Alata-Regular.ttf'),
+    AlataRegular: require('./assets/fonts/Alata-Regular.ttf')
   });
 
   useEffect(() => {
@@ -61,7 +61,9 @@ export default () => {
         <ContextProvider>
           <SafeAreaProvider>
             <StatusBar barStyle="light-content" />
-            <NavigationContainer theme={Friendup}>{loading ? <Splash /> : <App />}</NavigationContainer>
+            <NavigationContainer theme={Friendup}>
+              {loading ? <Splash /> : <App />}
+            </NavigationContainer>
           </SafeAreaProvider>
         </ContextProvider>
       </Provider>
