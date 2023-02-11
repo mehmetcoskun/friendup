@@ -5,8 +5,8 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 
 export const credentials = {
-  clientId: '04b81d6a04a746a2b77f57b29538a923',
-  clientSecret: 'c58f17fed12e4a05bc99b7cd31c7b639',
+  clientId: '',
+  clientSecret: '',
   redirectUri: 'friendup://callback',
   spotifyAuthUri: 'https://accounts.spotify.com/authorize',
   spotifyTokenUri: 'https://accounts.spotify.com/api/token',
